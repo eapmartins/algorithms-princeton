@@ -6,9 +6,12 @@ type QuickFind struct {
 	arr []int
 }
 
-func (qf *QuickFind) Union(p, q int) {
+func (qf *QuickFind) Union(p, q int) error {
 
-	qf.validIndex(p, q)
+	err := qf.validIndex(p, q)
+	if err != nil {
+		return err
+	}
 
 	pID := qf.arr[p]
 	qID := qf.arr[q]
@@ -18,22 +21,28 @@ func (qf *QuickFind) Union(p, q int) {
 			qf.arr[i] = qID
 		}
 	}
+
+	return nil
 }
 
-func (qf *QuickFind) Connected(p, q int) bool {
-	return qf.arr[p] == qf.arr[q]
-}
-
-func (qf *QuickFind) validIndex(p, q int) {
-	if p < len(qf.arr) && q < len(qf.arr) && p >= 0 && q >= 0 {
-		return
+func (qf *QuickFind) Connected(p, q int) (bool, error) {
+	err := qf.validIndex(p, q)
+	if err != nil {
+		return false, err
 	}
-	panic(fmt.Sprintf("index out of range %d and %d", p, q))
+
+	return qf.arr[p] == qf.arr[q], nil
 }
 
-func (qf *QuickFind) Print() {
-	for i := 0; i < len(qf.arr); i++ {
-		fmt.Printf("%d:%d ", i, qf.arr[i])
+func (qf *QuickFind) validIndex(p, q int) error {
+
+	if qf.arr == nil {
+		return fmt.Errorf("arr should not be null")
 	}
-	println()
+
+	if p > len(qf.arr) || q > len(qf.arr) || p <= 0 || q <= 0 {
+		return fmt.Errorf("index out of range %d and %d", p, q)
+	}
+
+	return nil
 }
