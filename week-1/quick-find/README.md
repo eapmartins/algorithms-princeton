@@ -1,4 +1,4 @@
-# Union Find
+# Quick Find
 ## Complexity Analysis
 
 The initial implementation of QuickFind has a time complexity of O(n^2) because each union operation takes O(n) time. As a result, if there are n unions performed, the overall time complexity becomes quadratic.
